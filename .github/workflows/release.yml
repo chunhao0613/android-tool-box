@@ -1,0 +1,33 @@
+name: Release Android app
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag: { description: "Tag to release (e.g. v1.0)", required: true }
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build
+        working-directory: android
+        run: ./gradlew assembleRelease
+      - name: Rename
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          cp android/app/build/outputs/apk/release/app-release.apk "apk-extractor-$TAG.apk"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: APK 匯出 ${{ env.TAG }}
+          files: apk-extractor-*.apk
+          body: |
+            在手機上下載 `apk-extractor-${{ env.TAG }}.apk` 並安裝（需允許「安裝不明來源的應用程式」）。
+            分割 APK 的 App 會匯出成 `.apks`，請用 SAI 安裝。

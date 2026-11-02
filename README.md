@@ -36,3 +36,5 @@ Only export apps you have installed yourself, for your own backup or research. D
 ```bash
 cd android && ./gradlew assembleRelease   # -> app/build/outputs/apk/release/app-release.apk
 ```
+
+**下載安裝**：到 [Releases](https://github.com/chunhao0613/android-tool-box/releases/latest) 用手機下載 `apk-extractor-*.apk` 安裝。發新版：推送 `v*` tag（例如 `git tag v1.1 && git push origin v1.1`）。
