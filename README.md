@@ -22,3 +22,19 @@ Native libraries usually live in the ABI split, which `libs` handles. Reinstall 
 `adb install-multiple out/<pkg>-<ver>/*.apk`.
 
 Only export apps you have installed yourself, for your own backup or research. Don't redistribute them.
+
+## 手機 App（android/）
+
+不需要電腦或 root，直接在手機上把已安裝的 App 匯出成 APK。
+
+- 搜尋 App，可切換是否顯示系統 App
+- 點一下 App：查看版本與大小，可「儲存」到任意位置或「分享」給其他 App
+- 長按可多選，再按「匯出到資料夾」批次匯出
+- 分割 APK 的 App 會打包成 `.apks`，可用 SAI 安裝；一般 App 則輸出單一 `.apk`
+
+取得 APK：到 GitHub Actions 的「Build Android app」執行結果下載 `apk-extractor` artifact，或自行建置：
+```bash
+cd android && ./gradlew assembleRelease   # -> app/build/outputs/apk/release/app-release.apk
+```
+
+**下載安裝**：到 [Releases](https://github.com/chunhao0613/android-tool-box/releases/latest) 用手機下載 `apk-extractor-*.apk` 安裝。發新版：推送 `v*` tag（例如 `git tag v1.1 && git push origin v1.1`）。
